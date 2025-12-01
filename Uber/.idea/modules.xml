@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Uber Ride Flow.iml" filepath="$PROJECT_DIR$/Uber Ride Flow.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Uber.iml" filepath="$PROJECT_DIR$/Uber.iml" />
     </modules>
   </component>
 </project>
