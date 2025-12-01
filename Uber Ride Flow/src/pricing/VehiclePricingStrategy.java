@@ -1,7 +1,7 @@
 package pricing;
 
-import module.Location;
-import module.VehicleType;
+import model.Location;
+import model.VehicleType;
 
 public class VehiclePricingStrategy implements PricingStrategy {
 

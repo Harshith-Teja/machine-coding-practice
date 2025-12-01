@@ -1,8 +1,8 @@
 package service;
 
-import module.Cab;
-import module.Location;
-import module.VehicleType;
+import model.Cab;
+import model.Location;
+import model.VehicleType;
 
 import java.util.ArrayList;
 import java.util.List;

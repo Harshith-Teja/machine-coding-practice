@@ -1,6 +1,6 @@
 package service;
 
-import module.*;
+import model.*;
 import pricing.PricingStrategy;
 
 import java.time.LocalDateTime;

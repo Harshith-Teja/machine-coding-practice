@@ -1,11 +1,10 @@
-import module.*;
+import model.*;
 import pricing.PricingStrategy;
 import pricing.VehiclePricingStrategy;
 import service.BookingService;
 import service.CabService;
 import service.RiderService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {

@@ -1,6 +1,6 @@
 package service;
 
-import module.Rider;
+import model.Rider;
 
 import java.util.HashMap;
 import java.util.Map;

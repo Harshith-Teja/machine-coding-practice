@@ -1,4 +1,4 @@
-package module;
+package model;
 
 public class VehicleFareEstimate {
     private final VehicleType vehicleType;
