@@ -11,6 +11,7 @@ public class Booking {
     private BookingStatus status;
     private LocalDateTime rideStartTime;
     private LocalDateTime rideEndTime;
+    private String otp;
 
     public Booking(Rider rider, Cab cab, double fare, Location srcLocation, Location destLocation) {
         this.rider = rider;
@@ -18,6 +19,7 @@ public class Booking {
         this.fare = fare;
         this.destLocation = destLocation;
         this.srcLocation = srcLocation;
+        this.otp = generateOtp();
     }
 
     public Rider getRider() {
@@ -72,12 +74,20 @@ public class Booking {
         this.rideEndTime = rideEndTime;
     }
 
-    public void summary() {
+    public void printSummary() {
         System.out.println("Rider: " + rider.getName());
         System.out.println("Driver: " + cab.getDriverName());
         System.out.println("Pickup: " + srcLocation + ", Drop: " + destLocation);
         System.out.println("Fare: " + fare);
         System.out.println("Vehicle Type: " + cab.getVehicleType());
 
+    }
+
+    public String generateOtp() {
+        return String.valueOf(1000 + (int) (Math.random() * 9000));
+    }
+
+    public String getOtp() {
+        return otp;
     }
 }

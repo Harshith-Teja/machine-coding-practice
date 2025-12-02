@@ -1,31 +1,46 @@
 import model.*;
 import pricing.PricingStrategy;
+import pricing.SurgePricingStrategy;
 import pricing.VehiclePricingStrategy;
 import service.BookingService;
 import service.CabService;
+import service.DriverService;
 import service.RiderService;
 
 import java.util.List;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
 
         RiderService riderService = new RiderService();
         CabService cabService = new CabService();
-        PricingStrategy pricingStrategy = new VehiclePricingStrategy();
-        BookingService bookingService = new BookingService(cabService, pricingStrategy);
+        PricingStrategy pricingStrategy = new SurgePricingStrategy(10); // set demand to 10 for surge pricing
+        DriverService driverService = new DriverService();
+        BookingService bookingService = new BookingService(cabService, driverService, pricingStrategy);
 
+        //register rider
         Rider rider = riderService.registerRider("r1", "Ash");
         Location pickup = new Location(10, 10);
         rider.setCurrentLocation(pickup);
 
         Location drop = new Location(20, 20);
-        cabService.registerCab("c1", "David", VehicleType.AUTO, new Location(11,11));
-        cabService.registerCab("c2", "Wallace", VehicleType.BIKE, new Location(21,11));
-        cabService.registerCab("c3", "Michael", VehicleType.CAR, new Location(11,22));
-        cabService.registerCab("c4", "Gary", VehicleType.BIKE, new Location(12,21));
-        cabService.registerCab("c5", "Scott", VehicleType.AUTO, new Location(15,11));
 
+        //register driver
+        driverService.registerDriver("d1", "David");
+        driverService.registerDriver("d2", "Wallace");
+        driverService.registerDriver("d3", "Michael");
+        driverService.registerDriver("d4", "Gary");
+        driverService.registerDriver("d5", "Scott");
+
+        //register cab
+        cabService.registerCab("c1", driverService.getDriver("d1").getName(), VehicleType.AUTO, new Location(11,11));
+        cabService.registerCab("c2", driverService.getDriver("d2").getName(), VehicleType.BIKE, new Location(21,11));
+        cabService.registerCab("c3", driverService.getDriver("d3").getName(), VehicleType.CAR, new Location(11,22));
+        cabService.registerCab("c4", driverService.getDriver("d4").getName(), VehicleType.BIKE, new Location(12,21));
+        cabService.registerCab("c5", driverService.getDriver("d5").getName(), VehicleType.AUTO, new Location(15,11));
+
+        //1. show fare estimates
         System.out.println("Fare estimation");
 
         List<VehicleFareEstimate> estimatedFare = bookingService.showAvailableVehicleTypes(pickup, drop);
@@ -35,18 +50,40 @@ public class Main {
             System.out.println(vehicleFareEstimate);
         }
 
+        //2. Simulate rider selecting a vehicle type
         VehicleType vehicleType = VehicleType.AUTO;
 
         Booking booking;
 
+        //3. Complete booking -> Start ride
         try {
             booking = bookingService.bookCab(rider, vehicleType, drop);
+            System.out.println("Booking created\nOTP generated - " + booking.getOtp());
         }catch (Exception e){
             System.out.println("Error: " + e.getMessage());
             return;
         }
 
-        bookingService.startRide(booking);
+        Scanner sc = new Scanner(System.in);
+        int maxAttempts = 3;
+
+        //Driver can try for max of 3 attempts to enter the correct otp
+        for(int i=1 ; i<=maxAttempts ; i++)
+        {
+            System.out.println("Enter OTP: (Attempt " + i + " of " + maxAttempts + "): ");
+            String enteredOtp = sc.nextLine();
+
+            bookingService.startRide(booking, enteredOtp);
+            if(booking.getStatus() == BookingStatus.INPROGRESS)
+                break;
+        }
+
+        //If booking failed, exit the process
+        if(booking.getStatus() != BookingStatus.INPROGRESS)
+        {
+            System.out.println("Too many failed attempts. Ride cannot be started.");
+            return;
+        }
 
         System.out.println("Ride is in progress");
 
@@ -65,7 +102,7 @@ public class Main {
         bookingService.endRide(booking);
 
         System.out.println("Final summary");
-        booking.summary();
+        booking.printSummary();
     }
 }
 

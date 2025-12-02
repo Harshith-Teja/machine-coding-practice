@@ -31,4 +31,21 @@ public class CabService {
 
         return nearestCab;
     }
+
+    public List<Cab> findNearestCabs(Location riderLocation, VehicleType vehicleType) {
+        double nearestDistance = Double.MAX_VALUE;
+        List<Cab> nearestCabs = new ArrayList<>();
+
+        for(Cab cab : cabs) {
+            if(cab.isAvailable() && cab.getVehicleType() == vehicleType) {
+                double dist = cab.getCurrentLocation().calculateDist(riderLocation);
+
+                if(dist < nearestDistance) {
+                    nearestCabs.add(cab);
+                }
+            }
+        }
+
+        return nearestCabs;
+    }
 }

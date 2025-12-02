@@ -3,8 +3,13 @@ package pricing;
 import model.Location;
 import model.VehicleType;
 
-public class VehiclePricingStrategy implements PricingStrategy {
+public class SurgePricingStrategy implements PricingStrategy {
 
+    private int demandCount;
+
+    public SurgePricingStrategy(int demandCount) {
+        this.demandCount = demandCount;
+    }
 
     @Override
     public double calculateFare(Location fromLocation, Location toLocation, VehicleType vehicleType) {
@@ -18,6 +23,8 @@ public class VehiclePricingStrategy implements PricingStrategy {
 
         double dist = fromLocation.calculateDist(toLocation);
 
-        return dist * baseRatePerKm;
+        double surgeMultiplier = 1 + (demandCount/10.0);
+
+        return dist * baseRatePerKm * surgeMultiplier;
     }
 }
