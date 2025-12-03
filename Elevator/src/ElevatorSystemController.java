@@ -1,6 +1,7 @@
 import model.Elevator;
 import request.OutsideRequest;
-import scheduler.RequestScheduler;
+import scheduler.NearestElevatorStrategy;
+import strategy.ElevatorAssignmentStrategy;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -11,15 +12,15 @@ public class ElevatorSystemController {
 
     private final List<Elevator> elevators;
 
-    private final RequestScheduler scheduler;
+    private final ElevatorAssignmentStrategy assignmentStrategy;
 
     private final int minFloor, maxFloor;
 
     private final Queue<OutsideRequest> pendingExternalRequests = new LinkedList<>();
 
-    public ElevatorSystemController(int numOfElevators, RequestScheduler scheduler, int minFloor, int maxFloor) {
+    public ElevatorSystemController(int numOfElevators, ElevatorAssignmentStrategy assignmentStrategy, int minFloor, int maxFloor) {
         this.elevators = new ArrayList<>();
-        this.scheduler = scheduler;
+        this.assignmentStrategy = assignmentStrategy;
         this.minFloor = minFloor;
         this.maxFloor = maxFloor;
         for (int i = 0; i < numOfElevators; i++) {
@@ -28,7 +29,7 @@ public class ElevatorSystemController {
     }
 
     public void handleExternalRequest(OutsideRequest request) {
-        Elevator assignedElevator = scheduler.assignElevator(elevators, request.getFloor(), request.getDirection());
+        Elevator assignedElevator = assignmentStrategy.assignElevator(elevators, request.getFloor(), request.getDirection());
 
         if(assignedElevator != null) {
             assignedElevator.addInternalRequest(request.getFloor());
@@ -48,7 +49,7 @@ public class ElevatorSystemController {
 
                 OutsideRequest request = pendingExternalRequests.remove();
 
-                Elevator assignedElevator = scheduler.assignElevator(elevators, request.getFloor(), request.getDirection());
+                Elevator assignedElevator = assignmentStrategy.assignElevator(elevators, request.getFloor(), request.getDirection());
 
                 if(assignedElevator != null) {
                     assignedElevator.addInternalRequest(request.getFloor());
@@ -71,5 +72,9 @@ public class ElevatorSystemController {
         for(Elevator elevator : elevators) {
             System.out.println("Elevator " + elevator.getId() + " : " + elevator.getStatus());
         }
+    }
+
+    public List<Elevator> getElevators() {
+        return elevators;
     }
 }

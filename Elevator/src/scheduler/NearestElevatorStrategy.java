@@ -2,10 +2,11 @@ package scheduler;
 
 import model.Direction;
 import model.Elevator;
+import strategy.ElevatorAssignmentStrategy;
 
 import java.util.List;
 
-public class RequestScheduler {
+public class NearestElevatorStrategy implements ElevatorAssignmentStrategy {
 
     public Elevator assignElevator(List<Elevator> elevators, int requestedFloor, Direction requestedDirection) {
 

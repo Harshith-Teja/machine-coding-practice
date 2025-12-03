@@ -30,6 +30,14 @@ public class Elevator {
         if(floor >= minFloor && floor <= maxFloor) {
             internalRequests.add(floor);
         }
+
+        if (direction == Direction.IDLE) {
+            if (floor > currentFloor)
+                direction = Direction.UP;
+
+            if (floor < currentFloor)
+                direction = Direction.DOWN;
+        }
     }
 
     public void move() {
@@ -94,5 +102,11 @@ public class Elevator {
 
     public ElevatorStatus getStatus() {
         return new ElevatorStatus(id, currentFloor, direction, elevatorDoorState, internalRequests);
+    }
+
+    public void resetToIdle() {
+        this.internalRequests.clear();
+        this.direction = Direction.IDLE;
+        this.elevatorDoorState = ElevatorDoorState.CLOSED;
     }
 }

@@ -1,15 +1,37 @@
 import model.Direction;
+import model.Elevator;
 import request.OutsideRequest;
-import scheduler.RequestScheduler;
+import scheduler.DirectionBasedStrategy;
+import scheduler.NearestElevatorStrategy;
 
 public class Main {
     public static void main(String[] args) throws InterruptedException {
 
-        ElevatorSystemController controller = new ElevatorSystemController(2, new RequestScheduler(), 0, 10);
+        ElevatorSystemController controller = new ElevatorSystemController(3, new DirectionBasedStrategy(), 0, 10);
 
-        controller.handleExternalRequest(new OutsideRequest(1, Direction.UP));
+        controller.getElevators().get(0).addInternalRequest(0);
+        controller.getElevators().get(0).move();
+
+        controller.getElevators().get(1).addInternalRequest(3);
+        controller.getElevators().get(1).move();
+
+        while(controller.getElevators().get(1).getCurrentFloor() < 3) {
+            controller.getElevators().get(1).move();
+        }
+
+        controller.getElevators().get(2).addInternalRequest(6);
+        controller.getElevators().get(2).move();
+
+        while(controller.getElevators().get(2).getCurrentFloor() < 6) {
+            controller.getElevators().get(2).move();
+        }
+
+        controller.getElevators().forEach(Elevator::resetToIdle);
+
         controller.handleExternalRequest(new OutsideRequest(2, Direction.UP));
-        controller.handleExternalRequest(new OutsideRequest(3, Direction.UP));
+        controller.handleExternalRequest(new OutsideRequest(4, Direction.UP));
+        controller.handleExternalRequest(new OutsideRequest(5, Direction.UP));
+        controller.handleExternalRequest(new OutsideRequest(7, Direction.DOWN));
 
         for(int tick=1 ; tick<=10 ; tick++) {
             controller.stepSimulation();
