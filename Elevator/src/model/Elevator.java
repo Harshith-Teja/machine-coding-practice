@@ -88,14 +88,6 @@ public class Elevator {
         return internalRequests;
     }
 
-    public int getMinFloor() {
-        return minFloor;
-    }
-
-    public int getMaxFloor() {
-        return maxFloor;
-    }
-
     public boolean isIdle() {
         return direction == Direction.IDLE;
     }

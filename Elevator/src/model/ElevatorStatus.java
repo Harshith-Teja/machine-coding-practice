@@ -22,26 +22,6 @@ public class ElevatorStatus {
         this.pendingRequests = pendingRequests;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public int getCurrentFloor() {
-        return currentFloor;
-    }
-
-    public Direction getDirection() {
-        return direction;
-    }
-
-    public ElevatorDoorState getElevatorDoorState() {
-        return elevatorDoorState;
-    }
-
-    public TreeSet<Integer> getPendingRequests() {
-        return pendingRequests;
-    }
-
     @Override
     public String toString() {
         return "ElevatorStatus{" +
