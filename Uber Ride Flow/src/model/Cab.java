@@ -16,10 +16,6 @@ public class Cab {
         this.isAvailable = true;
     }
 
-    public String getId() {
-        return id;
-    }
-
     public boolean isAvailable() {
         return isAvailable;
     }

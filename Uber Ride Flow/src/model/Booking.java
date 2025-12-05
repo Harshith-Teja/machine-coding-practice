@@ -22,34 +22,6 @@ public class Booking {
         this.otp = generateOtp();
     }
 
-    public Rider getRider() {
-        return rider;
-    }
-
-    public Cab getDriver() {
-        return cab;
-    }
-
-    public Location getSrcLocation() {
-        return srcLocation;
-    }
-
-    public void setSrcLocation(Location srcLocation) {
-        this.srcLocation = srcLocation;
-    }
-
-    public Location getDestLocation() {
-        return destLocation;
-    }
-
-    public void setDestLocation(Location destLocation) {
-        this.destLocation = destLocation;
-    }
-
-    public Double getFare() {
-        return fare;
-    }
-
     public BookingStatus getStatus() {
         return status;
     }
@@ -58,16 +30,8 @@ public class Booking {
         this.status = status;
     }
 
-    public LocalDateTime getRideStartTime() {
-        return rideStartTime;
-    }
-
     public void setRideStartTime(LocalDateTime rideStartTime) {
         this.rideStartTime = rideStartTime;
-    }
-
-    public LocalDateTime getRideEndTime() {
-        return rideEndTime;
     }
 
     public void setRideEndTime(LocalDateTime rideEndTime) {

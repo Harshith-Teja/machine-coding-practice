@@ -9,14 +9,6 @@ public class VehicleFareEstimate {
         this.estimatedFare = estimatedFare;
     }
 
-    public VehicleType getVehicleType() {
-        return vehicleType;
-    }
-
-    public double getEstimatedFare() {
-        return estimatedFare;
-    }
-
     @Override
     public String toString() {
         return vehicleType + " - Rs." + estimatedFare;
